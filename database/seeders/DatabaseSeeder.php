@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Role;
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,11 +13,18 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Create a single role using the factory.
+        $admin = Role::factory()->create([
+            'name' => 'admin',
+            'description' => 'Administrator role with full access',
+        ]);
 
+        // Create the admin user and assign the role_id properly.
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' => 'Admin',
+            'email' => 'admin@synai.eu',
+            'password' => bcrypt('password'),
+            'role_id' => $admin->id,  // Ensure role_id is passed as the foreign key
         ]);
     }
 }
