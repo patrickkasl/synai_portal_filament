@@ -2,13 +2,17 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\EditTeamProfile;
+use App\Filament\Pages\RegisterTeam;
 use App\Filament\Resources\UserResource\Widgets\LatestUsersWidget;
+use App\Models\Team;
 use Exception;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Http\Middleware\IdentifyTenant;
+use Filament\Navigation\MenuItem;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
@@ -32,6 +36,12 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->tenant(Team::class)
+            ->tenantRegistration(RegisterTeam::class)
+            ->tenantProfile(EditTeamProfile::class)
+            ->tenantMenuItems([
+                'register' => MenuItem::make()->label('New company'),
+            ])
             ->colors([
                 'primary' => Color::Sky,
             ])
