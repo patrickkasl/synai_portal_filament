@@ -13,7 +13,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create a single role using the factory.
+        // Create the member role using the factory.
+        Role::factory()->create([
+            'name' => 'member',
+            'description' => 'Member role with limited access',
+        ]);
+
+        // Create the admin role using the factory.
         $admin = Role::factory()->create([
             'name' => 'admin',
             'description' => 'Administrator role with full access',

@@ -2,21 +2,27 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\UserResource\Pages;
-use App\Models\User;
+use App\Filament\Resources\TeamResource\Pages\CreateTeam;
+use App\Filament\Resources\TeamResource\Pages\EditTeam;
+use App\Filament\Resources\TeamResource\Pages\ListTeams;
+use App\Models\Team;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class UserResource extends Resource
+class TeamResource extends Resource
 {
-    protected static ?string $model = User::class;
+    protected static ?string $model = Team::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static bool $isScopedToTenant = true;
+
+    protected static ?string $tenantOwnershipRelationshipName = 'users';
+
+    protected static ?string $tenantRelationshipName = 'users';
 
     public static function form(Form $form): Form
     {
@@ -25,35 +31,9 @@ class UserResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('email')
+                Forms\Components\TextInput::make('description')
                     ->required()
-                    ->email()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('password')
-                    ->required()
-                    ->password()
-                    ->minLength(8)
-                    ->maxLength(255)
-                    ->dehydrated(fn ($state) => ! empty($state))
-                    ->visible(fn ($record) => $record === null)
-                    ->confirmed('password_confirmation')
-                    ->label('Password'),
-                Forms\Components\TextInput::make('password_confirmation')
-                    ->password()
-                    ->maxLength(255)
-                    ->dehydrated(false)
-                    ->label('Confirm Password'),
-                Forms\Components\Select::make('teams')
-                    ->relationship('teams', 'name')
-                    ->multiple()
-                    ->preload()
-                    ->required()
-                    ->label('Teams'),
-                Forms\Components\Select::make('role_id')
-                    ->relationship('role', 'name')
-                    ->preload()
-                    ->required()
-                    ->label('Role'),
             ]);
     }
 
@@ -66,7 +46,7 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('email')
+                Tables\Columns\TextColumn::make('description')
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -90,16 +70,16 @@ class UserResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListUsers::route('/'),
-            'create' => Pages\CreateUser::route('/create'),
-            'edit' => Pages\EditUser::route('/{record}/edit'),
+            'index' => ListTeams::route('/'),
+            'create' => CreateTeam::route('/create'),
+            'edit' => EditTeam::route('/{record}/edit'),
         ];
     }
 }
