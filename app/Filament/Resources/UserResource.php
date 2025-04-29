@@ -43,12 +43,6 @@ class UserResource extends Resource
                     ->maxLength(255)
                     ->dehydrated(false)
                     ->label('Confirm Password'),
-                Forms\Components\Select::make('teams')
-                    ->relationship('teams', 'name')
-                    ->multiple()
-                    ->preload()
-                    ->required()
-                    ->label('Teams'),
                 Forms\Components\Select::make('role_id')
                     ->relationship('role', 'name')
                     ->preload()
