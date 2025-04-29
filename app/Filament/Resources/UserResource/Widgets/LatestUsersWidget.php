@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\UserResource\Widgets;
 
 use App\Models\User;
+use Filament\Facades\Filament;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
@@ -14,8 +15,9 @@ class LatestUsersWidget extends BaseWidget
         return $table
             ->query(
                 User::query()
-                    ->latest()
-                    ->take(5)
+                    ->join('team_user', 'users.id', '=', 'team_user.user_id')
+                    ->where('team_user.team_id', Filament::getTenant()->id)
+                    ->orderBy('users.created_at', 'desc')
             )
             ->columns([
                 Tables\Columns\TextColumn::make('name')

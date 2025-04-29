@@ -25,6 +25,12 @@ class DatabaseSeeder extends Seeder
             'description' => 'Administrator role with full access',
         ]);
 
+        // Create the manager role using the factory.
+        Role::factory()->create([
+            'name' => 'manager',
+            'description' => 'Manager role with elevated access',
+        ]);
+
         // Create the admin user and assign the role_id properly.
         User::factory()->create([
             'name' => 'Admin',

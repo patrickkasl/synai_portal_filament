@@ -40,7 +40,7 @@ class AdminPanelProvider extends PanelProvider
             ->tenantRegistration(RegisterTeam::class)
             ->tenantProfile(EditTeamProfile::class)
             ->tenantMenuItems([
-                'register' => MenuItem::make()->label('New company'),
+                'register' => MenuItem::make()->label('New team'),
             ])
             ->colors([
                 'primary' => Color::Sky,

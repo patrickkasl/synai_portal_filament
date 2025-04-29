@@ -12,7 +12,6 @@ class Team extends Model
         'description',
     ];
 
-
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(

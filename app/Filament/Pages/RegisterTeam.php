@@ -3,7 +3,6 @@
 namespace App\Filament\Pages;
 
 use App\Models\Team;
-use App\Models\User;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Pages\Tenancy\RegisterTenant;
@@ -28,13 +27,19 @@ class RegisterTeam extends RegisterTenant
 
     protected function handleRegistration(array $data): Team
     {
-        /** @var Team $entity */
-        $entity = parent::handleRegistration($data);
+        /** @var Team $teams */
+        parent::handleRegistration($data);
 
-        /** @var User $user */
-        $user = auth()->user();
-        $user->teams()->attach($entity->id);
+        $firstTeamFromUser = auth()->user()->teams()->first();
 
-        return $entity;
+        if ($firstTeamFromUser) {
+            return $firstTeamFromUser;
+        }
+
+        $firstTeamTotal = Team::first();
+
+        auth()->user()->teams()->attach($firstTeamTotal->id);
+
+        return $firstTeamTotal;
     }
 }
